@@ -49,3 +49,4 @@ Thumbs.db
 *.7z
 out.txt
 frames/
+push_to_github.bat
