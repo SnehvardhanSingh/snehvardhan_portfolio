@@ -745,14 +745,69 @@ header, main, footer {
 
 .bio-content-area {
   flex: 1;
-  min-height: 280px;
   background: rgba(6, 6, 8, 0.45);
   border: 1px dashed var(--border-dashed);
   border-radius: var(--radius-md);
-  padding: 2.5rem;
+  padding: 2.25rem 2.5rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bio-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.35rem;
+  line-height: 1.25;
+}
+
+.bio-narrative {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-bottom: 1.75rem;
+}
+
+.bio-paragraph {
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.bio-meta-section {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.bio-meta-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.bio-meta-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.bio-meta-value {
+  color: var(--text-secondary);
+  font-weight: 400;
 }
 
 .editorial-placeholder-block {
@@ -863,6 +918,29 @@ header, main, footer {
   color: var(--text-secondary);
 }
 
+.card-status-dot.status-active {
+  color: var(--text-primary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.card-status-dot.status-active::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+.card-status-dot.status-completed {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
 .card-prompt-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
@@ -880,6 +958,13 @@ header, main, footer {
 .card-prompt-body {
   padding-top: 1rem;
   border-top: 1px dashed var(--border-dashed);
+}
+
+.education-desc {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
 .prompt-hint {
@@ -1482,6 +1567,15 @@ header, main, footer {
     padding: 5.5rem 0;
   }
 
+  .profile-card,
+  .bio-container-card {
+    padding: 2.25rem 1.75rem;
+  }
+
+  .bio-content-area {
+    padding: 1.75rem 1.5rem;
+  }
+
   .mobile-toggle {
     display: flex;
   }
@@ -1571,5 +1665,19 @@ header, main, footer {
 
   .hero-identity-row {
     gap: 0.35rem 0.65rem;
+  }
+
+  .profile-card,
+  .bio-container-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .bio-content-area {
+    padding: 1.35rem 1.15rem;
+  }
+
+  .bio-meta-row {
+    flex-direction: column;
+    gap: 0.2rem;
   }
 }

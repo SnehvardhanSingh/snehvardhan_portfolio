@@ -30,7 +30,6 @@ build/
 *.sln
 *.swp
 *.swo
-.agents/
 
 # Operating System files
 .DS_Store
