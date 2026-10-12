@@ -18,22 +18,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Toggle Mobile Menu
   if (mobileToggle && navMenu) {
-    mobileToggle.addEventListener('click', () => {
-      const isOpen = navMenu.classList.toggle('open');
-      mobileToggle.classList.toggle('active');
-      mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+    const closeMobileMenu = () => {
+      navMenu.classList.remove('open');
+      mobileToggle.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-locked');
+    };
+
+    const openMobileMenu = () => {
+      navMenu.classList.add('open');
+      mobileToggle.classList.add('active');
+      mobileToggle.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('menu-locked');
+    };
+
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (navMenu.classList.contains('open')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
     });
 
     // Close mobile menu when a nav link is clicked
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
         if (navMenu.classList.contains('open')) {
-          navMenu.classList.remove('open');
-          mobileToggle.classList.remove('active');
-          mobileToggle.setAttribute('aria-expanded', 'false');
+          closeMobileMenu();
         }
       });
     });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close menu if window is resized past mobile/tablet breakpoint
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 992 && navMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    }, { passive: true });
   }
 
   // 3. Navbar scroll effect
@@ -47,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', handleScroll, { passive: true });
   handleScroll();
 
-  // 4. Smooth Scrolling with fixed header offset
+  // 4. Smooth Scrolling with dynamic fixed header offset
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
@@ -56,9 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
         e.preventDefault();
-        const headerOffset = 76;
+        const headerOffset = navbar ? navbar.offsetHeight : 76;
         const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        const offsetPosition = elementPosition + window.pageYOffset - (headerOffset - 4);
 
         window.scrollTo({
           top: offsetPosition,
@@ -258,9 +294,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.drawImage(img, cx, cy, nw, nh);
     };
 
-    // Responsive Canvas Resize
+    // Responsive Canvas Resize with device-tailored DPR scaling
     const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const isMobile = window.innerWidth <= 768;
+      const maxDpr = isMobile ? 1.5 : 2;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       scrollCanvas.width = Math.floor(window.innerWidth * dpr);
       scrollCanvas.height = Math.floor(window.innerHeight * dpr);
       drawFrame(Math.round(currentFrame));
